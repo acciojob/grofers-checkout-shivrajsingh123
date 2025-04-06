@@ -18,6 +18,9 @@
       font-weight: bold;
       background-color: #f0f0f0;
     }
+    td[contenteditable="true"] {
+      background-color: #ffffe0;
+    }
   </style>
 </head>
 <body>
@@ -26,53 +29,49 @@
 
   <table id="groceryTable">
     <tr>
-      <th class="item">Item</th>
-      <th class="prices">Price</th>
+      <th>Item</th>
+      <th>Price</th>
     </tr>
     <tr>
-      <td class="item">Apples</td>
-      <td class="prices">2.50</td>
+      <td class="item">Item 1</td>
+      <td class="price" contenteditable="true">0</td>
     </tr>
     <tr>
-      <td class="item">Bread</td>
-      <td class="prices">1.75</td>
+      <td class="item">Item 2</td>
+      <td class="price" contenteditable="true">0</td>
     </tr>
     <tr>
-      <td class="item">Milk</td>
-      <td class="prices">3.00</td>
+      <td class="item">Item 3</td>
+      <td class="price" contenteditable="true">0</td>
+    </tr>
+    <tr>
+      <td class="item">Item 4</td>
+      <td class="price" contenteditable="true">0</td>
+    </tr>
+    <tr>
+      <td class="item">Item 5</td>
+      <td class="price" contenteditable="true">0</td>
     </tr>
   </table>
 
+  <button onclick="calculateTotal()">Calculate Total</button>
+
+  <h3 id="ans">Total: $0.00</h3>
+
   <script>
-    // Get all elements with class 'prices', skipping the header
-    const priceElements = document.querySelectorAll('td.prices');
+    function calculateTotal() {
+      const priceElements = document.querySelectorAll('.price');
+      let total = 0;
 
-    let total = 0;
+      priceElements.forEach(el => {
+        const value = parseFloat(el.textContent.trim());
+        if (!isNaN(value)) {
+          total += value;
+        }
+      });
 
-    // Sum up all prices
-    priceElements.forEach(priceEl => {
-      const price = parseFloat(priceEl.textContent);
-      if (!isNaN(price)) {
-        total += price;
-      }
-    });
-
-    // Create total row
-    const table = document.getElementById('groceryTable');
-    const totalRow = document.createElement('tr');
-    totalRow.className = 'total-row';
-
-    const totalCell = document.createElement('td');
-    totalCell.textContent = 'Total Price';
-    totalCell.colSpan = 1;
-
-    const valueCell = document.createElement('td');
-    valueCell.textContent = `$${total.toFixed(2)}`;
-    valueCell.className = 'prices';
-
-    totalRow.appendChild(totalCell);
-    totalRow.appendChild(valueCell);
-    table.appendChild(totalRow);
+      document.getElementById('ans').textContent = `Total: $${total.toFixed(2)}`;
+    }
   </script>
 
 </body>
